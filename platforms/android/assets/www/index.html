@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<!-- 
+App-o-Mat jQuery Mobile Cordova starter template
+Copyright 2014 Lou Franco
+https://github.com/app-o-mat/jqm-cordova-template-project
+http://app-o-mat.com
+
+MIT License
+https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
+-->
+<head>	
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+
+	<title>Futsal Nepal</title>
+
+	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="lib/jquery-mobile/css/jquery.mobile-1.4.0.min.css" />
+	
+	<script type="text/javascript" src="lib/jquery-mobile/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-mobile-router/js/jquery.mobile.router.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-mobile/js/jquery.mobile-1.4.0.min.js"></script>
+
+	
+</head>
+
+<body>
+<div data-role="page" id="login">
+	<div data-role="header" data-position="fixed">
+		<h1>Futsal Nepal</h1>
+	</div>
+
+	<div role="main" class="ui-content" id="login-content">
+	
+			<label for="textinput-1">Enter UserName:</label>
+			<input type="text" name="textinput-1" id="textinput-1" placeholder="Username.." value="">
+			<label for="textinput-2">Enter Password:</label>
+			<input type="password" name="textinput-2" id="textinput-2" >
+			<!-- <input type="button" value="Log In" id="submit"> -->
+			<a href="#home?1" class="ui-btn">Log In</a>
+
+	</div>
+</div>
+<div data-role="page" id="home">
+	<div data-role="header" data-position="fixed">
+		<h1>Futsal Nepal</h1><a href="#settings" data-icon="gear" data-transition="slideup" class="ui-btn-right">Settings</a>
+	</div>
+
+	<div role="main" class="ui-content" id="home-content">
+	
+			
+	
+	</div>
+</div>
+<script id="blog-list-template" type="text/x-handlebars-template">
+	<ul data-role="listview" data-autodividers="false"data-filter-placeholder="Search Schedule" data-filter="true" data-inset="true" id="blog-list">
+
+		{{#.}}<li><a href="#post?{{@index}}" data-transition="slide">{{title}}</a></li>{{/.}}
+			</ul>
+</script>
+<div data-role="page" id="post">
+	<div data-role="header" data-position="fixed">
+		<h1>Profile</h1><a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
+	</div>
+
+	<div role="main" class="ui-content" id="post-content">
+	  
+	</div>
+	<div role="schedule" class="ui-content" id="post-schedule">
+	  
+	</div>
+</div>
+	
+<script id="post-template" type="text/x-handlebars-template">
+	<h2>{{title}}</h2>
+<table data-role="table" id="table-custom-2" data-mode="" class="ui-body-d ui-shadow table-stripe ui-responsive">
+		<thead>
+		<tr class="ui-bar-d">
+			<th data-priority="1">
+					Time	
+			</th>
+			<th data-priority="1">
+					Status	
+			</th>
+			<th data-priority="1">
+					Booked by	
+			</th>
+			<th data-priority="1">
+					Price	
+			</th>
+			
+		</tr>
+		</thead>
+		<tbody>
+		               
+			 {{#each body}}
+			 	<tr>
+                            <td>{{start_time}} to {{end_time}}</td>
+
+                            {{#if flag}}
+                            <td>Booked</td>
+
+                            <td>{{user}}</td>
+
+							{{else}}
+							<td>Available</td>
+							<td>book</td>
+
+							{{/if}}
+							<td>{{price}}</td>                            
+						     
+						  
+              </tr>
+
+             {{/each}}
+        
+   		
+   		</tbody>
+	</table>
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="lib/fastclick/js/fastclick.js"></script>
+<script type="text/javascript" src="lib/handlebars/js/handlebars-v3.0.1.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+
+<script type="text/javascript">
+	
+	$(document).on('pagebeforehide', '[data-role="page"]',function(e,data){  
+    var loader = setInterval(function(){
+        $.mobile.loading('show');
+        clearInterval(loader);
+    },1); 
+}); 
+
+$(document).on('pageshow', '[data-role="page"]',function(e,data){  
+    var loader = setInterval(function(){
+        $.mobile.loading('hide');
+        clearInterval(loader);
+    },1); 
+});   
+	appomat.app.initialize();
+	</script>
+
+
+</body>
+</html>
