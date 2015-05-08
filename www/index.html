@@ -39,13 +39,15 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 			<label for="textinput-2">Enter Password:</label>
 			<input type="password" name="textinput-2" id="textinput-2" >
 			<!-- <input type="button" value="Log In" id="submit"> -->
-			<a href="#home?1" class="ui-btn">Log In</a>
+			<button id="loginbutton"class="ui-btn">Log In</button>
 
 	</div>
 </div>
 <div data-role="page" id="home">
 	<div data-role="header" data-position="fixed">
-		<h1>Futsal Nepal</h1><a href="#settings" data-icon="gear" data-transition="slideup" class="ui-btn-right">Settings</a>
+		<h1>Futsal Nepal</h1>
+			<a id="home-refresh-btn" data-icon="refresh"  class="ui-btn-left">Refresh</a>
+		<a id="logout" data-icon="gear" data-transition="slideup" class="ui-btn-right">Log Out</a>
 	</div>
 
 	<div role="main" class="ui-content" id="home-content">

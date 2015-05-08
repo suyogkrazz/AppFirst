@@ -21,9 +21,20 @@ postTemplate:{
 },
     initialize: function() {
 		document.addEventListener('deviceready', this.onDeviceReady, false);
-		
+		this.checkLogin();
 		this.postTemplate= Handlebars.compile($("#post-template").html());
 		this.blogListTemplate= Handlebars.compile($("#blog-list-template").html());
+        var app=this;
+        $("#loginbutton").click(function(){
+            app.loginBeforeCreate();
+        });
+        $("#home-refresh-btn").click(function(){
+            app.get_blog_data();
+        });
+          $("#logout").click(function(){
+            app.logOut();
+        });
+
     },
     postBeforeShow:function(event,args){
     	var post=this.blogData[args[1]];
@@ -87,8 +98,13 @@ postTemplate:{
             success:function(data){
                 console.log(data);
                 if (data=="no") {
+                    $.mobile.changePage("#login");
                    // return false;
-                };
+                }else{
+
+                    $.mobile.changePage("#home");
+                }
+
             }
         });
     }
@@ -102,6 +118,12 @@ postTemplate:{
         // $("#blog-list").html(this.blogListTemplate(this.blogData));
         // $("#blog-list").enhanceWithin();
     
+    },logOut:function(){
+
+         localStorage["username"] = "";
+           localStorage["password"] = "";
+           this.checkLogin();
+          
     },
 
 };
@@ -112,6 +134,7 @@ appomat.router= new $.mobile.Router(
 				'#post[?](\\d+)$':{handler:'postBeforeShow',events:"bs"},
 				'#home$':{handler:'homeBeforeCreate',events:"bc"},
                 '#home[?](\\d+)$':{handler:'loginBeforeCreate',events:"bc"},
+
 			},
 
 			appomat.app
