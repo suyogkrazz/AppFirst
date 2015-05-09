@@ -6,7 +6,8 @@ http://app-o-mat.com
 MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 */
-//var ip= "192.168.123.5";
+var url= "192.168.123.5";
+//var url="localhost"
 var appomat = {};
 
 appomat.app = {
@@ -65,7 +66,7 @@ postTemplate:{
        // console.log(post);
           $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/arenasdetailapihere',
+            url: 'http://'+url+'/pine1/arenasdetailapihere',
             data: {
              
                 id:post.id
@@ -96,7 +97,7 @@ postTemplate:{
         var app=this;
         $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/myProfile',
+            url: 'http://'+url+'/pine1/myProfile',
             data: {
              
                 user:localStorage["username"]
@@ -110,7 +111,7 @@ postTemplate:{
     },
     get_blog_data:function(){
     	var app=this;
-    		$.get('http://localhost/pine1/arenasapihere',function(data){
+    		$.get('http://'+url+'/pine1/arenasapihere',function(data){
     			
                 var json = JSON.parse(data);
     			app.blogData=json;
@@ -131,7 +132,7 @@ postTemplate:{
     checkLogin: function() {
                   $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/apiloginhere',
+            url: 'http://'+url+'/pine1/apiloginhere',
             data: {
              
                 user:localStorage["username"],
