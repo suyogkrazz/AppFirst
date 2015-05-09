@@ -18,12 +18,15 @@ postTemplate:{
 
 },blogListTemplate:{
 
+},userProfileTemplate:{
+
 },
     initialize: function() {
 		document.addEventListener('deviceready', this.onDeviceReady, false);
 		this.checkLogin();
 		this.postTemplate= Handlebars.compile($("#post-template").html());
 		this.blogListTemplate= Handlebars.compile($("#blog-list-template").html());
+        this.userProfileTemplate = Handlebars.compile($("#user-profile-template").html());
         var app=this;
         $("#loginbutton").click(function(){
             app.loginBeforeCreate();
@@ -34,7 +37,12 @@ postTemplate:{
           $("#logout").click(function(){
             app.logOut();
         });
-          $(document).on("click",".ll",function() {
+
+        $("#view-my-profile").click(function(){
+            app.getProfile();
+        });
+
+        $(document).on("click",".ll",function() {
              var phoneno=$(this).attr("val");
              window.open('tel:'+phoneno, '_blank', 'location=no,closebuttoncaption=Home,disallowoverscroll=yes');
 
@@ -49,7 +57,7 @@ postTemplate:{
        // console.log(post);
           $.ajax({
             type: "GET",
-            url: 'http://192.168.123.5/pine1/arenasdetailapihere',
+            url: 'http://localhost/pine1/arenasdetailapihere',
             data: {
              
                 id:post.id
@@ -73,9 +81,25 @@ postTemplate:{
               }
         });
     },
+     getProfile:function(){
+        var app=this;
+        $.ajax({
+            type: "GET",
+            url: 'http://localhost/pine1/myProfile',
+            data: {
+             
+                user:localStorage["username"]
+
+            },
+            success:function(data){
+                $("#user-profile").html(app.userProfileTemplate(JSON.parse(data)));
+                $("#user-profile").enhanceWithin();
+            }
+        });
+    },
     get_blog_data:function(){
     	var app=this;
-    		$.get('http://192.168.123.5/pine1/arenasapihere',function(data){
+    		$.get('http://localhost/pine1/arenasapihere',function(data){
     			
                 var json = JSON.parse(data);
     			app.blogData=json;
@@ -96,7 +120,7 @@ postTemplate:{
     checkLogin: function() {
                   $.ajax({
             type: "GET",
-            url: 'http://192.168.123.5/pine1/apiloginhere',
+            url: 'http://localhost/pine1/apiloginhere',
             data: {
              
                 user:localStorage["username"],
@@ -133,6 +157,7 @@ postTemplate:{
            this.checkLogin();
           
     },
+   
 
 };
 

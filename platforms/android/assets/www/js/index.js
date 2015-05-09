@@ -18,12 +18,15 @@ postTemplate:{
 
 },blogListTemplate:{
 
+},userProfileTemplate:{
+
 },
     initialize: function() {
 		document.addEventListener('deviceready', this.onDeviceReady, false);
 		this.checkLogin();
 		this.postTemplate= Handlebars.compile($("#post-template").html());
 		this.blogListTemplate= Handlebars.compile($("#blog-list-template").html());
+    this.userProfileTemplate = Handlebars.compile($("#user-profile-template").html());
         var app=this;
         $("#loginbutton").click(function(){
             app.loginBeforeCreate();
@@ -33,6 +36,9 @@ postTemplate:{
         });
           $("#logout").click(function(){
             app.logOut();
+        });
+        $("#view-my-profile").click(function(){
+            app.getProfile();
         });
           $(document).on("click",".ll",function() {
              var phoneno=$(this).attr("val");
@@ -72,6 +78,22 @@ postTemplate:{
               }
         });
     },
+     getProfile:function(){
+        var app=this;
+        $.ajax({
+            type: "GET",
+            url: 'http://localhost/pine1/myProfile',
+            data: {
+             
+                user:localStorage["username"]
+
+            },
+            success:function(data){
+                $("#user-profile").html(app.userProfileTemplate(JSON.parse(data)));
+                $("#user-profile").enhanceWithin();
+            }
+        });
+    },
     get_blog_data:function(){
     	var app=this;
     		$.get('http://192.168.123.5/pine1/arenasapihere',function(data){
@@ -105,7 +127,7 @@ postTemplate:{
             success:function(data){
                 console.log(data);
                 if (data=="no") {
-                    $.mobile.changePage("#login",{transition: 'pop'});
+                    $.mobile.changePage("#login");
                    // return false;
                 }else{
 
@@ -132,6 +154,7 @@ postTemplate:{
            this.checkLogin();
           
     },
+   
 
 };
 
