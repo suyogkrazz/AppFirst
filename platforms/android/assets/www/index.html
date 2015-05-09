@@ -40,6 +40,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 			<input type="password" name="textinput-2" id="textinput-2" >
 			<!-- <input type="button" value="Log In" id="submit"> -->
 			<button id="loginbutton"class="ui-btn">Log In</button>
+			<div></div>
 
 	</div>
 </div>
@@ -93,7 +94,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 </script>
 <div data-role="page" id="post">
 	<div data-role="header" data-position="fixed">
-		<h1>Profile</h1><a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
+		<h1>Arenas</h1><a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
 	</div>
 
 	<div role="main" class="ui-content" id="post-content">
@@ -106,6 +107,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 	
 <script id="post-template" type="text/x-handlebars-template">
 	<h2>{{title}}</h2>
+	<button id="contactno" class="ui-btn ll" val="{{contact}}">Call This Arena:{{contact}}</button>
 <table data-role="table" id="table-custom-2" data-mode="" class="ui-body-d ui-shadow table-stripe ui-responsive">
 		<thead>
 		<tr class="ui-bar-d">

@@ -26,7 +26,7 @@ postTemplate:{
 		this.checkLogin();
 		this.postTemplate= Handlebars.compile($("#post-template").html());
 		this.blogListTemplate= Handlebars.compile($("#blog-list-template").html());
-        this.userProfileTemplate = Handlebars.compile($("#user-profile-template").html());
+    this.userProfileTemplate = Handlebars.compile($("#user-profile-template").html());
         var app=this;
         $("#loginbutton").click(function(){
             app.loginBeforeCreate();
@@ -40,15 +40,21 @@ postTemplate:{
         $("#view-my-profile").click(function(){
             app.getProfile();
         });
+          $(document).on("click",".ll",function() {
+             var phoneno=$(this).attr("val");
+             window.open('tel:'+phoneno, '_blank', 'location=no,closebuttoncaption=Home,disallowoverscroll=yes');
 
+    });
     },
     postBeforeShow:function(event,args){
     	var post=this.blogData[args[1]];
+       // $("#profile-name").html(post.title);
+
         var app=this;
-      //  console.log(post);
+       // console.log(post);
           $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/arenasdetailapihere',
+            url: 'http://192.168.123.5/pine1/arenasdetailapihere',
             data: {
              
                 id:post.id
@@ -59,6 +65,7 @@ postTemplate:{
             var jsonObj = [];
               var  item = {}
         item ["title"] = post.title;
+        item ["contact"] = post.contact;
         item ["body"] = JSON.parse(data);
 
         jsonObj.push(item);
@@ -89,7 +96,7 @@ postTemplate:{
     },
     get_blog_data:function(){
     	var app=this;
-    		$.get('http://localhost/pine1/arenasapihere',function(data){
+    		$.get('http://192.168.123.5/pine1/arenasapihere',function(data){
     			
                 var json = JSON.parse(data);
     			app.blogData=json;
@@ -110,7 +117,7 @@ postTemplate:{
     checkLogin: function() {
                   $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/apiloginhere',
+            url: 'http://192.168.123.5/pine1/apiloginhere',
             data: {
              
                 user:localStorage["username"],
@@ -124,7 +131,7 @@ postTemplate:{
                    // return false;
                 }else{
 
-                    $.mobile.changePage("#home");
+                    $.mobile.changePage("#home",{transition: 'pop'});
                 }
 
             }
@@ -155,7 +162,7 @@ postTemplate:{
 appomat.router= new $.mobile.Router(
 			{
 				'#post[?](\\d+)$':{handler:'postBeforeShow',events:"bs"},
-				'#home$':{handler:'homeBeforeCreate',events:"bc"},
+				'#home$':{handler:'homeBeforeCreate',events:"bs"},
                 '#home[?](\\d+)$':{handler:'loginBeforeCreate',events:"bc"},
 
 			},
