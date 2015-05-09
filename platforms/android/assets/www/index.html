@@ -39,23 +39,54 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 			<label for="textinput-2">Enter Password:</label>
 			<input type="password" name="textinput-2" id="textinput-2" >
 			<!-- <input type="button" value="Log In" id="submit"> -->
-			<a href="#home?1" class="ui-btn">Log In</a>
+			<button id="loginbutton"class="ui-btn">Log In</button>
 
 	</div>
 </div>
 <div data-role="page" id="home">
 	<div data-role="header" data-position="fixed">
-		<h1>Futsal Nepal</h1><a href="#settings" data-icon="gear" data-transition="slideup" class="ui-btn-right">Settings</a>
+		<div data-role="navbar" data-iconpos="bottom">
+			<ul>
+				<li><a id="home-refresh-btn" data-icon="refresh">Refresh</a></li>
+				<li><a href="#user-profile" id="view-my-profile" data-icon="user" data-transition="slide">Me</a></li>
+				<li><a id="logout" data-icon="power" data-transition="slideup">Log Out</a></li>
+			</ul>
+		</div>
 	</div>
 
 	<div role="main" class="ui-content" id="home-content">
-	
-			
-	
+
 	</div>
 </div>
+
+<div data-role="page" id="user-profile">
+	
+</div>
+
+<script id="user-profile-template" type="text/x-handlebars-template">
+	<div data-role="header" data-position="fixed">
+		<h1>{{username}}</h1>
+		<a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
+		<a href="#settings" data-transition="slide" data-direction="up" data-icon="gear" class="ui-btn-right">Settings</a>
+	</div>
+
+	<div role="main" class="ui-content" id="profile-content">
+		<ul data-role="listview" data-inset="true">
+		  <li data-icon="false">
+		  	<a href="#">
+			    <img src="http://localhost/pine1/assets/img/profile/user/thumb/{{image}}">
+			    <h2>{{name}}</h2>
+			    <p>{{contact}}</p>
+			    <p>{{email}}</p>
+			    <p>{{address}}</p>
+			</a>
+		  </li>
+		</ul>
+	</div>
+</script>
+
 <script id="blog-list-template" type="text/x-handlebars-template">
-	<ul data-role="listview" data-autodividers="false"data-filter-placeholder="Search Schedule" data-filter="true" data-inset="true" id="blog-list">
+	<ul data-role="listview" data-autodividers="false" data-filter-placeholder="Search Schedule" data-filter="true" data-inset="true" id="blog-list">
 
 		{{#.}}<li><a href="#post?{{@index}}" data-transition="slide">{{title}}</a></li>{{/.}}
 			</ul>
