@@ -6,7 +6,8 @@ http://app-o-mat.com
 MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 */
-
+var url= "192.168.123.5";
+//var url="localhost"
 var appomat = {};
 
 appomat.app = {
@@ -47,6 +48,14 @@ postTemplate:{
              window.open('tel:'+phoneno, '_blank', 'location=no,closebuttoncaption=Home,disallowoverscroll=yes');
 
     });
+          $(document).on("swipeleft",".slide",function(){
+          app.change();
+                   // 
+        });
+    },
+    change:function(){
+      console.log("ok");
+      $.mobile.changePage("#post",{transition: 'slide'});
     },
     postBeforeShow:function(event,args){
       $("#post-content").html("");
@@ -57,20 +66,23 @@ postTemplate:{
        // console.log(post);
           $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/arenasdetailapihere',
+            url: 'http://'+url+'/pine1/arenasdetailapihere',
             data: {
              
                 id:post.id
 
             },
+
+        dataType: 'json',
             success:function(data){
   //$.mobile.loading('hide');
+ // console.log(data.date);
             var jsonObj = [];
               var  item = {}
         item ["title"] = post.title;
         item ["contact"] = post.contact;
-        item ["body"] = JSON.parse(data);
-
+        item ["body"] = data.body;
+         item ["date"] = data.date;
         jsonObj.push(item);
            console.log(  localStorage["username"]);
         $("#post-content").html(app.postTemplate(jsonObj[0]));
@@ -85,7 +97,7 @@ postTemplate:{
         var app=this;
         $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/myProfile',
+            url: 'http://'+url+'/pine1/myProfile',
             data: {
              
                 user:localStorage["username"]
@@ -99,7 +111,7 @@ postTemplate:{
     },
     get_blog_data:function(){
     	var app=this;
-    		$.get('http://localhost/pine1/arenasapihere',function(data){
+    		$.get('http://'+url+'/pine1/arenasapihere',function(data){
     			
                 var json = JSON.parse(data);
     			app.blogData=json;
@@ -120,7 +132,7 @@ postTemplate:{
     checkLogin: function() {
                   $.ajax({
             type: "GET",
-            url: 'http://localhost/pine1/apiloginhere',
+            url: 'http://'+url+'/pine1/apiloginhere',
             data: {
              
                 user:localStorage["username"],
@@ -128,12 +140,13 @@ postTemplate:{
 
             },
             success:function(data){
-                console.log(data);
+              //  console.log(data);
                 if (data=="no") {
                     $.mobile.changePage("#login",{transition: 'pop'});
                    // return false;
+                   $(".error").html("Incorrect password and username combination!!TRY AGAIN");
                 }else{
-
+                    $(".error").html("");
                     $.mobile.changePage("#home",{transition: 'pop'});
                 }
 
@@ -141,11 +154,13 @@ postTemplate:{
         });
     }
     ,loginBeforeCreate:function(event,args){
+
       //  console.log($("#textinput-1").val());
        //  console.log($("#textinput-2").val());
          localStorage["username"] = $("#textinput-1").val();
            localStorage["password"] = $("#textinput-2").val();
            this.checkLogin();
+           
         this.get_blog_data();
         // $("#blog-list").html(this.blogListTemplate(this.blogData));
         // $("#blog-list").enhanceWithin();
