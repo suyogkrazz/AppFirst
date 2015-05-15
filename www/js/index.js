@@ -6,8 +6,8 @@ http://app-o-mat.com
 MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 */
-var url= "192.168.123.5";
-//var url="localhost"
+//var url= "192.168.123.5";
+var url="localhost"
 var appomat = {};
 
 appomat.app = {
@@ -48,20 +48,92 @@ postTemplate:{
              window.open('tel:'+phoneno, '_blank', 'location=no,closebuttoncaption=Home,disallowoverscroll=yes');
 
     });
-          $(document).on("swipeleft",".slide",function(){
-          app.change();
-                   // 
+
+      $(document).on("swipeleft",".slide",function(){
+         if (localStorage["recentarena"]>0) {
+          
+
+                  $.ajax({
+                  type: "GET",
+                  url: 'http://'+url+'/pine1/arenasdetailapihereleft',
+                  data: {
+                   
+                      id:localStorage["recentarena"],
+
+                      date:$("#datehere").val(),
+
+                  },
+
+              dataType: 'json',
+                  success:function(data){
+        //$.mobile.loading('hide');
+       // console.log(data.date);
+                  var jsonObj = [];
+                    var  item = {}
+              item ["title"] = data.title;
+              item ["contact"] = data.contact;
+              item ["body"] = data.body;
+               item ["date"] = data.date;
+              jsonObj.push(item);
+              $("#post-content").html(app.postTemplate(jsonObj[0]));
+              $("#post-content").enhanceWithin();
+                  },
+                        beforeSend : function (){
+                      //  $.mobile.loading('show');
+                    }
+              });
+                     };
+       $.mobile.changePage("#post",{transition: 'slide',allowSamePageTransition:true, reverse: false });
+      
         });
+  $(document).on("swiperight",".slide",function(){
+         if (localStorage["recentarena"]>0) {
+          
+
+                  $.ajax({
+                  type: "GET",
+                  url: 'http://'+url+'/pine1/arenasdetailapihereright',
+                  data: {
+                   
+                      id:localStorage["recentarena"],
+
+                      date:$("#datehere").val(),
+
+                  },
+
+              dataType: 'json',
+                  success:function(data){
+        //$.mobile.loading('hide');
+       // console.log(data.date);
+                  var jsonObj = [];
+                    var  item = {}
+              item ["title"] = data.title;
+              item ["contact"] = data.contact;
+              item ["body"] = data.body;
+               item ["date"] = data.date;
+              jsonObj.push(item);
+              $("#post-content").html(app.postTemplate(jsonObj[0]));
+              $("#post-content").enhanceWithin();
+                  },
+                        beforeSend : function (){
+                      //  $.mobile.loading('show');
+                    }
+              });
+                     };
+       $.mobile.changePage("#post",{transition: 'slide',allowSamePageTransition:true, reverse: true });
+      
+        });
+          
     },
-    change:function(){
-      console.log("ok");
-      $.mobile.changePage("#post",{transition: 'slide'});
-    },
+   
     postBeforeShow:function(event,args){
       $("#post-content").html("");
     	var post=this.blogData[args[1]];
        // $("#profile-name").html(post.title);
 
+         localStorage["recentarena"] = post.id;
+
+     //  console.log(args[1]);
         var app=this;
        // console.log(post);
           $.ajax({
@@ -131,7 +203,7 @@ postTemplate:{
     },
     checkLogin: function() {
                   $.ajax({
-            type: "GET",
+            type: "POST",
             url: 'http://'+url+'/pine1/apiloginhere',
             data: {
              
@@ -179,12 +251,13 @@ postTemplate:{
 
 appomat.router= new $.mobile.Router(
 			{
-				'#post[?](\\d+)$':{handler:'postBeforeShow',events:"bc"},
+				'#post[?](\\d+)$':{handler:'postBeforeShow',events:"bs"},
 				'#home$':{handler:'homeBeforeCreate',events:"bs"},
-                '#home[?](\\d+)$':{handler:'loginBeforeCreate',events:"bc"},
+                '#home[?](\\d+)$':{handler:'loginBeforeCreate',events:"bs"},
 
 			},
 
 			appomat.app
 
 	);
+

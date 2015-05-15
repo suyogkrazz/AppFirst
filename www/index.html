@@ -105,12 +105,14 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 	</div>
 	</div>
 </div>
-	
+
 <script id="post-template" type="text/x-handlebars-template">
 	<h2>{{title}}</h2>
 	<button id="contactno" class="ui-btn ll" val="{{contact}}">Call This Arena:{{contact}}</button>
 <table data-role="table" id="table-custom-2" data-mode="" class="ui-body-d ui-shadow table-stripe ui-responsive">
 	<h2>Date:{{date}}</h2>
+
+	<input type="hidden" id="datehere" value="{{date}}">
 		<thead>
 		<tr class="ui-bar-d">
 			<th data-priority="1">
@@ -137,11 +139,29 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                             {{#if flag}}
                             <td>Booked</td>
 
-                            <td>{{user}}</td>
+                            <td>
+
+										<a href="#" data-inline="true" data-role="button">
+                            {{user}}
+                            </a>
+                            </td>
 
 							{{else}}
 							<td>Available</td>
-							<td>book</td>
+							<td>
+
+										<a href="#popupMenu"data-inline="true" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-left ui-btn-b">Book</a>
+									<div data-role="popup" id="popupMenu" data-theme="b">
+									        <ul data-role="listview" data-inset="true" style="min-width:210px;">
+									            <li data-role="list-divider">Choose Booking Method</li>
+									            <li><a href="#">Via Esewa</a></li>
+									            <li><a href="#">Via Game Points</a></li>
+									            
+									        </ul>
+									</div>
+
+
+							</td>
 
 							{{/if}}
 							<td>{{price}}</td>                            
