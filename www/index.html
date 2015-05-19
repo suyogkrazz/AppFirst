@@ -18,6 +18,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 	<link rel="stylesheet" href="css/index.css">
 	<link rel="stylesheet" href="lib/jquery-mobile/css/jquery.mobile-1.4.0.min.css" />
+
 	
 	<script type="text/javascript" src="lib/jquery-mobile/js/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="lib/jquery-mobile-router/js/jquery.mobile.router.min.js"></script>
@@ -92,6 +93,16 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 		{{#.}}<li><a href="#post?{{@index}}" style="white-space:normal"data-transition="slide">{{title}}</a></li>{{/.}}
 			</ul>
 </script>
+
+<script id="geo-list-template" type="text/x-handlebars-template">
+	<ul data-role="listview" data-autodividers="false" data-filter-placeholder="Search Schedule" data-filter="true" data-inset="true" id="blog-list">
+
+		{{#.}}<li><a href="#post?{{@index}}" style="white-space:normal"data-transition="slide">
+		{{title}}
+		<p>{{dist}}miles</p>
+		</a></li>{{/.}}
+			</ul>
+</script>
 <div data-role="page" id="post">
 	<div data-role="header" data-position="fixed">
 		<h1>Arena's Detail</h1><a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
@@ -109,7 +120,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 <script id="post-template" type="text/x-handlebars-template">
 	<h2>{{title}}</h2>
 	<button id="contactno" class="ui-btn ll" val="{{contact}}">Call This Arena:{{contact}}</button>
-<table data-role="table" id="table-custom-2" data-mode="" class="ui-body-d ui-shadow table-stripe ui-responsive">
+<table data-role="table" data-mode="reflow"id="table-custom-2" data-mode="" class="ui-body-d ui-shadow table-stripe ui-responsive">
 	<h2>Date:{{date}}</h2>
 
 	<input type="hidden" id="datehere" value="{{date}}">
@@ -150,12 +161,25 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 							<td>Available</td>
 							<td>
 
-										<a href="#popupMenu"data-inline="true" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-left ui-btn-b">Book</a>
-									<div data-role="popup" id="popupMenu" data-theme="b">
+										<a href="#popupMenu{{id}}"data-inline="true" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-left ui-btn-b">Book</a>
+									<div data-role="popup" id="popupMenu{{id}}" data-theme="b">
 									        <ul data-role="listview" data-inset="true" style="min-width:210px;">
 									            <li data-role="list-divider">Choose Booking Method</li>
-									            <li><a href="#">Via Esewa</a></li>
-									            <li><a href="#">Via Game Points</a></li>
+									            <li><button onclick="bookesewa({{id}})">Via Esewa</button></li>
+									            <li>
+									            	    <form action="#" method="post" class="form-horizontal" enctype='multipart/form-data'>
+                                              <input value="points" name="type" type="hidden">
+
+                                         <input value="{{price}}" name="amt" type="hidden">
+
+                                     <input value="{{id}}" name="schedule" type="hidden">
+                                      <input value="{{id}}" name="admin" type="hidden">
+                                      <input value="{{../../date}}" name="date" type="hidden">
+                                      
+                                                                                  </form> 
+
+
+									            <button onclick="bookgame({{id}})">Via Game Points</button></li>
 									            
 									        </ul>
 									</div>

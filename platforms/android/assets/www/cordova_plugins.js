@@ -51,7 +51,8 @@ module.exports.metadata =
     "org.apache.cordova.splashscreen": "1.0.0",
     "org.apache.cordova.statusbar": "0.1.10",
     "org.apache.cordova.device": "0.3.0",
-    "com.ionic.keyboard": "1.0.4"
+    "com.ionic.keyboard": "1.0.4",
+    "org.apache.cordova.geolocation": "0.3.12"
 }
 // BOTTOM OF METADATA
 });
