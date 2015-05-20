@@ -1,12 +1,5 @@
-/*
-App-o-Mat jQuery Mobile Cordova starter template
-https://github.com/app-o-mat/jqm-cordova-template-project
-http://app-o-mat.com
 
-MIT License
-https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
-*/
-var url= "192.168.123.4";
+var url= "192.168.123.2";
 //var url="localhost"
 var appomat = {};
 
@@ -23,6 +16,7 @@ postTemplate:{
 
 },
     initialize: function() {
+
 		document.addEventListener('deviceready', this.onDeviceReady, false);
 		this.checkLogin();
 		this.postTemplate= Handlebars.compile($("#post-template").html());
@@ -33,6 +27,10 @@ postTemplate:{
         $("#loginbutton").click(function(){
           localStorage["log"]="set";
             app.loginBeforeCreate();
+        });
+        $("#refresh").click(function(){
+         
+            app.refresh();
         });
         $("#home-refresh-btn").click(function(){
             app.get_blog_data();
@@ -127,6 +125,43 @@ postTemplate:{
         });
           
     },
+    refresh:function(){
+           if (localStorage["recentarena"]>0) {
+         
+
+                  $.ajax({
+                  type: "GET",
+                  url: 'http://'+url+'/pine1/arenasdetailapihere',
+                  data: {
+                   
+                      id:localStorage["recentarena"],
+
+                      date:$("#datehere").val(),
+
+                  },
+
+              dataType: 'json',
+                  success:function(data){
+        //$.mobile.loading('hide');
+       // console.log(data.date);
+                  var jsonObj = [];
+                    var  item = {}
+              item ["title"] = data.title;
+              item ["contact"] = data.contact;
+              item ["body"] = data.body;
+               item ["date"] = data.date;
+              jsonObj.push(item);
+              $("#post-content").html(app.postTemplate(jsonObj[0]));
+              $("#post-content").enhanceWithin();
+                  },
+                        beforeSend : function (){
+                      //  $.mobile.loading('show');
+                    }
+              });
+                     };
+       
+    }
+    ,
    
     postBeforeShow:function(event,args){
       $("#post-content").html("");
@@ -157,6 +192,8 @@ postTemplate:{
         item ["contact"] = post.contact;
         item ["body"] = data.body;
          item ["date"] = data.date;
+         item ["adminid"] = data.adminid;
+         item ["points"] = data.points;
         jsonObj.push(item);
            console.log(  localStorage["username"]);
         $("#post-content").html(app.postTemplate(jsonObj[0]));
@@ -184,7 +221,15 @@ postTemplate:{
         });
     },
     get_blog_data:function(){
-    	var app=this;
+     	var app=this;
+        $.get('http://'+url+'/pine1/arenasapihere',function(data){
+          
+                var json = JSON.parse(data);
+          app.blogData=json;
+          //console.log(app.blogData);
+          $("#home-content").html(app.blogListTemplate(app.blogData));
+          $("#home-content").enhanceWithin();
+        });
        if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
     }
@@ -199,19 +244,27 @@ postTemplate:{
         });
     }
     function onError(error) {
-    alert('code: '    + error.code    + '\n' +
-          'message: ' + error.message + '\n');
+        $.get('http://'+url+'/pine1/arenasapihere',function(data){
+          
+                var json = JSON.parse(data);
+          app.blogData=json;
+          //console.log(app.blogData);
+          $("#home-content").html(app.blogListTemplate(app.blogData));
+          $("#home-content").enhanceWithin();
+        });
+    // alert('code: '    + error.code    + '\n' +
+    //       'message: ' + error.message + '\n');
 }
 
     		function showPosition(position) {
-    alert('Latitude: '          + position.coords.latitude          + '\n' +
-          'Longitude: '         + position.coords.longitude         + '\n' +
-          'Altitude: '          + position.coords.altitude          + '\n' +
-          'Accuracy: '          + position.coords.accuracy          + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-          'Heading: '           + position.coords.heading           + '\n' +
-          'Speed: '             + position.coords.speed             + '\n' +
-          'Timestamp: '         + position.timestamp                + '\n');
+    // alert('Latitude: '          + position.coords.latitude          + '\n' +
+    //       'Longitude: '         + position.coords.longitude         + '\n' +
+    //       'Altitude: '          + position.coords.altitude          + '\n' +
+    //       'Accuracy: '          + position.coords.accuracy          + '\n' +
+    //       'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+    //       'Heading: '           + position.coords.heading           + '\n' +
+    //       'Speed: '             + position.coords.speed             + '\n' +
+    //       'Timestamp: '         + position.timestamp                + '\n');
 
         $.ajax({
             type: "GET",
@@ -311,3 +364,45 @@ appomat.router= new $.mobile.Router(
 
 	);
 
+  function bookgame(id){
+         
+
+        $(document).on("click","#subform"+id+"",function() {
+    var postData = $("#form"+id).serialize();
+  var app=appomat.app;
+    $.ajax({
+        type: 'POST',
+          data: postData+"&user="+localStorage["username"]+"&pass="+localStorage["password"],
+            url: 'http://'+url+'/pine1/booknowapigamepoints',
+        success: function(data){
+
+          $('#popupMenu'+id).popup("close");
+
+          if (data=="success") {
+            alert("Your Schedule has been Booked!!");
+          }
+          else{
+          alert(data); 
+          }  
+           
+          app.refresh();
+
+                },
+        error: function(){
+            console.log(data);
+        }
+    });
+ 
+    return false;
+});
+
+        }
+
+
+
+     function bookapi(price,schedule,admin,date1){
+      
+      window.open('https://dev.esewa.com.np/epay/main?tAmt='+price+'&amt='+price+'&txAmt=0&psc=0&pdc=0&scd=Futball&pid=1111&su=http://'+url+'/pine1/successapis/'+localStorage["username"]+'/'+localStorage['password']+'/'+price+'/'+schedule+'/'+admin+'/'+$("#datehere").val()+'?q=su&fu=http://192.168.123.4/pine1/failureapis/?q=fu','_blank','location=yes');
+      return false;
+       $('#popupMenu'+id).popup("close");
+     }
