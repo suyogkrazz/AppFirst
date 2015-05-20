@@ -27,7 +27,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 	
 </head>
 
-<body>
+<body id="new">
 <div data-role="page" id="login">
 	<div data-role="header" data-position="fixed">
 		<h1>Futsal Nepal</h1>
@@ -41,6 +41,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 			<input type="password" name="textinput-2" id="textinput-2" >
 			<!-- <input type="button" value="Log In" id="submit"> -->
 			<button id="loginbutton"class="ui-btn">Log In</button>
+			
+				<a href="http://www.pinesofts.com" target="_blank" class="ui-btn-center" onclick="window.open('http://www.futsalnepal.com/register','_blank','location=yes');return false;">Register Now</a>
 			<div class="error"></div>
 
 	</div>
@@ -172,7 +174,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 									        <ul data-role="listview" data-inset="true" style="min-width:210px;">
 									            <li data-role="list-divider">Choose Booking Method</li>
 									            <li>
-									             <button target="_blank"
+									             <button class="dis" target="_blank"
 									              onclick="bookapi({{price}},{{id}},{{../../adminid}},{{../../date}})">
                                                 Via Esewa</button>
 									            </li>
@@ -189,7 +191,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
                                                                                   </form> 
 
 
-									            <button id="subform{{id}}" onclick="bookgame({{id}})">Via Game Points</button>
+									            <button id="subform{{id}}" class="dis" onclick="bookgame({{id}})">Via Game Points</button>
 
 									            </li>
 									            
