@@ -402,6 +402,8 @@ appomat.router= new $.mobile.Router(
        
           if (data=="success") {
             alert("Your Schedule has been Booked!!");
+
+            $("#new").find("*").on();
           }
           else{
           alert(data); 
@@ -422,6 +424,7 @@ appomat.router= new $.mobile.Router(
 
               dataType: 'json',
                   success:function(data){
+                    console.log(data);
         //$.mobile.loading('hide');
        // console.log(data.date);
                   var jsonObj = [];
@@ -430,7 +433,6 @@ appomat.router= new $.mobile.Router(
               item ["contact"] = data.contact;
               item ["body"] = data.body;
                item ["date"] = $("#datehere").val();
-
          item ["adminid"] = data.adminid;
          item ["points"] = data.points;
               jsonObj.push(item);
