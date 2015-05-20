@@ -18,6 +18,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 	<link rel="stylesheet" href="css/index.css">
 	<link rel="stylesheet" href="lib/jquery-mobile/css/jquery.mobile-1.4.0.min.css" />
+
 	
 	<script type="text/javascript" src="lib/jquery-mobile/js/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="lib/jquery-mobile-router/js/jquery.mobile.router.min.js"></script>
@@ -75,7 +76,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 		<ul data-role="listview" data-inset="true">
 		  <li data-icon="false">
 		  	<a href="#">
-			    <img src="http://192.168.123.5/pine1/assets/img/profile/user/thumb/{{image}}">
+			    <img src="http://192.168.123.2/pine1/assets/img/profile/user/thumb/{{image}}">
 			    <h2>{{name}}</h2>
 			    <p>{{contact}}</p>
 			    <p>{{email}}</p>
@@ -104,8 +105,12 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 </script>
 <div data-role="page" id="post">
 	<div data-role="header" data-position="fixed">
-		<h1>Arena's Detail</h1><a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
+		<h1>Arena's Detail</h1>
+		<a href="#home" data-transition="slide" data-direction="reverse" data-icon="arrow-l" class="ui-btn-left">Home</a>
+		<a href="#" data-transition="fade" id="refresh"  data-icon="refresh" class="ui-btn-right">Refresh</a>
+	
 	</div>
+	
 	<div class="slide">
 	<div role="main" class="ui-content" id="post-content">
 	  
@@ -120,6 +125,8 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 	<h2>{{title}}</h2>
 	<button id="contactno" class="ui-btn ll" val="{{contact}}">Call This Arena:{{contact}}</button>
 <table data-role="table" data-mode="reflow"id="table-custom-2" data-mode="" class="ui-body-d ui-shadow table-stripe ui-responsive">
+	<h3>{{points}} Game Points For 1 Free Booking</h3>
+
 	<h2>Date:{{date}}</h2>
 
 	<input type="hidden" id="datehere" value="{{date}}">
@@ -160,12 +167,31 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 							<td>Available</td>
 							<td>
 
-										<a href="#popupMenu"data-inline="true" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-left ui-btn-b">Book</a>
-									<div data-role="popup" id="popupMenu" data-theme="b">
+										<a href="#popupMenu{{id}}"data-inline="true" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-left ui-btn-b">Book</a>
+									<div data-role="popup" id="popupMenu{{id}}" class="choise" data-theme="b">
 									        <ul data-role="listview" data-inset="true" style="min-width:210px;">
 									            <li data-role="list-divider">Choose Booking Method</li>
-									            <li><a href="#">Via Esewa</a></li>
-									            <li><a href="#">Via Game Points</a></li>
+									            <li>
+									             <button target="_blank"
+									              onclick="bookapi({{price}},{{id}},{{../../adminid}},{{../../date}})">
+                                                Via Esewa</button>
+									            </li>
+									            <li>
+									            	    <form action="#" id="form{{id}}" method="post"  class="form-horizontal" enctype='multipart/form-data'>
+							                                              <input value="points" name="type" type="hidden">
+
+							                                         <input value="{{price}}" name="amt" type="hidden">
+
+							                                     <input value="{{id}}" name="schedule" type="hidden">
+							                                      <input value="{{../../adminid}}" name="admin" type="hidden">
+							                                      <input value="{{../../date}}" name="date" type="hidden">
+							                                      
+                                                                                  </form> 
+
+
+									            <button id="subform{{id}}" onclick="bookgame({{id}})">Via Game Points</button>
+
+									            </li>
 									            
 									        </ul>
 									</div>
@@ -203,9 +229,11 @@ $(document).on('pageshow', '[data-role="page"]',function(e,data){
     var loader = setInterval(function(){
         $.mobile.loading('hide');
         clearInterval(loader);
-    },1); 
+    },1);
+
 });   
 	appomat.app.initialize();
+
 	</script>
 
 

@@ -1,13 +1,6 @@
-/*
-App-o-Mat jQuery Mobile Cordova starter template
-https://github.com/app-o-mat/jqm-cordova-template-project
-http://app-o-mat.com
 
-MIT License
-https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
-*/
-//var url= "192.168.123.4";
-var url="localhost"
+var url= "192.168.123.2";
+//var url="localhost"
 var appomat = {};
 
 appomat.app = {
@@ -35,8 +28,14 @@ postTemplate:{
           localStorage["log"]="set";
             app.loginBeforeCreate();
         });
-        $("#home-refresh-btn").click(function(){
+        
+            $(document).on("click","#refresh",function(){
+            app.refresh();
+        });
+        $(document).on("click","#home-refresh-btn",function(){
             app.get_blog_data();
+             $.mobile.changePage("#home",{transition: 'fade',allowSamePageTransition:true, reverse: false });
+      
         });
           $("#logout").click(function(){
             app.logOut();
@@ -77,6 +76,9 @@ postTemplate:{
               item ["contact"] = data.contact;
               item ["body"] = data.body;
                item ["date"] = data.date;
+
+         item ["adminid"] = data.adminid;
+         item ["points"] = data.points;
               jsonObj.push(item);
               $("#post-content").html(app.postTemplate(jsonObj[0]));
               $("#post-content").enhanceWithin();
@@ -91,11 +93,58 @@ postTemplate:{
         });
   $(document).on("swiperight",".slide",function(){
          if (localStorage["recentarena"]>0) {
-          
-
-                  $.ajax({
+                    $.ajax({
                   type: "GET",
                   url: 'http://'+url+'/pine1/arenasdetailapihereright',
+                  data: {
+                   
+                      id:localStorage["recentarena"],
+
+                      date:$("#datehere").val(),
+
+                  },
+
+              dataType: 'json',
+                  success:function(data){
+                    console.log(data);
+                    if (data.take=="no") {
+                      alert("Not Allowed");
+                      
+                    }else{
+        //$.mobile.loading('hide');
+       // console.log(data.date);
+                  var jsonObj = [];
+                    var  item = {}
+              item ["title"] = data.title;
+              item ["contact"] = data.contact;
+              item ["body"] = data.body;
+               item ["date"] = data.date;
+
+         item ["adminid"] = data.adminid;
+         item ["points"] = data.points;
+              jsonObj.push(item);
+              $("#post-content").html(app.postTemplate(jsonObj[0]));
+              $("#post-content").enhanceWithin();
+               $.mobile.changePage("#post",{transition: 'slide',allowSamePageTransition:true, reverse: true });
+      
+            }
+                  },
+                        beforeSend : function (){
+                      //  $.mobile.loading('show');
+                    }
+              });
+                     };
+      
+        });
+          
+    },
+    refresh:function(){
+           if (localStorage["recentarena"]>0) {
+         
+            var app=this;
+                  $.ajax({
+                  type: "GET",
+                  url: 'http://'+url+'/pine1/arenasdetailapihere',
                   data: {
                    
                       id:localStorage["recentarena"],
@@ -113,7 +162,10 @@ postTemplate:{
               item ["title"] = data.title;
               item ["contact"] = data.contact;
               item ["body"] = data.body;
-               item ["date"] = data.date;
+               item ["date"] = $("#datehere").val();
+
+         item ["adminid"] = data.adminid;
+         item ["points"] = data.points;
               jsonObj.push(item);
               $("#post-content").html(app.postTemplate(jsonObj[0]));
               $("#post-content").enhanceWithin();
@@ -123,11 +175,12 @@ postTemplate:{
                     }
               });
                      };
-       $.mobile.changePage("#post",{transition: 'slide',allowSamePageTransition:true, reverse: true });
+                                            $.mobile.changePage("#post",{transition: 'fade',allowSamePageTransition:true, reverse: false });
       
-        });
-          
-    },
+
+       
+    }
+    ,
    
     postBeforeShow:function(event,args){
       $("#post-content").html("");
@@ -158,6 +211,8 @@ postTemplate:{
         item ["contact"] = post.contact;
         item ["body"] = data.body;
          item ["date"] = data.date;
+         item ["adminid"] = data.adminid;
+         item ["points"] = data.points;
         jsonObj.push(item);
            console.log(  localStorage["username"]);
         $("#post-content").html(app.postTemplate(jsonObj[0]));
@@ -186,10 +241,18 @@ postTemplate:{
     },
     get_blog_data:function(){
      	var app=this;
-    //    if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(showPosition);
-    // }
-    // else{
+        $.get('http://'+url+'/pine1/arenasapihere',function(data){
+          
+                var json = JSON.parse(data);
+          app.blogData=json;
+          //console.log(app.blogData);
+          $("#home-content").html(app.blogListTemplate(app.blogData));
+          $("#home-content").enhanceWithin();
+        });
+       if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+    else{
       $.get('http://'+url+'/pine1/arenasapihere',function(data){
           
                 var json = JSON.parse(data);
@@ -198,8 +261,16 @@ postTemplate:{
           $("#home-content").html(app.blogListTemplate(app.blogData));
           $("#home-content").enhanceWithin();
         });
-    // }
+    }
     function onError(error) {
+        $.get('http://'+url+'/pine1/arenasapihere',function(data){
+          
+                var json = JSON.parse(data);
+          app.blogData=json;
+          //console.log(app.blogData);
+          $("#home-content").html(app.blogListTemplate(app.blogData));
+          $("#home-content").enhanceWithin();
+        });
     // alert('code: '    + error.code    + '\n' +
     //       'message: ' + error.message + '\n');
 }
@@ -313,6 +384,87 @@ appomat.router= new $.mobile.Router(
 	);
 
   function bookgame(id){
-          alert(id);
+         
+
+        $(document).on("click","#subform"+id+"",function() {
+    var postData = $("#form"+id).serialize();
+
+    $.ajax({
+        type: 'POST',
+          data: postData+"&user="+localStorage["username"]+"&pass="+localStorage["password"],
+            url: 'http://'+url+'/pine1/booknowapigamepoints',
+        success: function(data){
+
+    $.mobile.loading('hide');
+          $('#popupMenu'+id).popup("close");
+
+         
+       
+          if (data=="success") {
+            alert("Your Schedule has been Booked!!");
+          }
+          else{
+          alert(data); 
+            $("#new").find("*").on();
+          }
+                             if (localStorage["recentarena"]>0) {
+         
+                  $.ajax({
+                  type: "GET",
+                  url: 'http://'+url+'/pine1/arenasdetailapihere',
+                  data: {
+                   
+                      id:localStorage["recentarena"],
+
+                      date:$("#datehere").val(),
+
+                  },
+
+              dataType: 'json',
+                  success:function(data){
+        //$.mobile.loading('hide');
+       // console.log(data.date);
+                  var jsonObj = [];
+                    var  item = {}
+              item ["title"] = data.title;
+              item ["contact"] = data.contact;
+              item ["body"] = data.body;
+               item ["date"] = $("#datehere").val();
+
+         item ["adminid"] = data.adminid;
+         item ["points"] = data.points;
+              jsonObj.push(item);
+              $("#post-content").html(appomat.app.postTemplate(jsonObj[0]));
+              $("#post-content").enhanceWithin();
+                 $("#new").find("*").on();
+                  },
+                        beforeSend : function (){
+                     
+                    }
+              });
+                     }  
+     
+                },
+        error: function(){
+            console.log(data);
+        } ,beforeSend: function(){
+         $("#new").find("*").off();
+          $.mobile.loading('show');
+        }
+            
+
+    });
+
+    return false;
+});
 
         }
+
+
+
+     function bookapi(price,schedule,admin,date1){
+      
+      window.open('https://dev.esewa.com.np/epay/main?tAmt='+price+'&amt='+price+'&txAmt=0&psc=0&pdc=0&scd=Futball&pid=1111&su=http://'+url+'/pine1/successapis/'+localStorage["username"]+'/'+localStorage['password']+'/'+price+'/'+schedule+'/'+admin+'/'+$("#datehere").val()+'?q=su&fu=http://192.168.123.4/pine1/failureapis/?q=fu','_blank','location=yes');
+      return false;
+       $('#popupMenu'+id).popup("close");
+     }
