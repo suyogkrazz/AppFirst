@@ -18,3 +18,93 @@ body {
 
 .ui-li-has-count .ui-li-count { border-color:transparent; }
 .wrap { white-space:normal; }*/
+
+
+.center{
+	position: fixed;
+	top: 45%;
+	left: 50%;
+	  /* bring your own prefixes */
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+#login{
+	background: #15212f; /* Old browsers */
+	background: -moz-linear-gradient(-45deg, #15212f 50%, #131d29 50%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#15212f), color-stop(50%,#131d29)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg, #15212f 50%,#131d29 50%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg, #15212f 50%,#131d29 50%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg, #15212f 50%,#131d29 50%); /* IE10+ */
+	background: linear-gradient(135deg, #15212f 50%,#131d29 50%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#15212f', endColorstr='#131d29',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.login-box{
+	width: 340px;
+	margin-top: 5%;
+	text-shadow: none !important;
+}
+
+.login-box .ui-body-inherit{
+	color: #e5e5e5 !important;
+	background: none !important;
+	border: none !important;
+	text-shadow: none !important;
+}
+
+.login-box .ui-focus {
+	box-shadow: none !important;
+}
+
+.login-box .ui-shadow-inset{
+	box-shadow: none;
+}
+
+.login-box h1{
+	text-transform: uppercase;
+	font-weight: bold;
+	letter-spacing: 10px;
+	font-size: 21px;
+	color: #FF6831;
+	text-shadow: none !important;
+}
+
+.login-box input{
+	color: #fff;
+	outline: 0 !important;
+	border: 0 !important;
+	background-image: linear-gradient(#009688,#009688),linear-gradient(#d2d2d2,#d2d2d2) !important;
+	background-size: 0 2px,100% 1px !important;
+	background-repeat: no-repeat !important;
+	background-position: center bottom,center calc(100% - 1px) !important;
+	background-color: transparent !important;
+}
+
+#loginbutton {
+	padding: 9px;
+	width: 40%;
+	display: block;
+	margin: 15px auto;
+	background-color: #FF6831;
+	border-color: #CF4D1E;
+	border-radius: 1px;
+	color: #131D29;
+}
+
+.ui-btn {
+	text-shadow: none !important;
+}
+
+.register {
+	text-decoration: none;
+	color: #fff !important;
+	font-size: 12px;
+}
+
+.error {
+	color: #FF7D7D;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: bold;
+}

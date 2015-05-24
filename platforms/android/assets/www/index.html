@@ -29,23 +29,22 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 
 <body id="new">
 <div data-role="page" id="login">
-	<div data-role="header" data-position="fixed">
-		<h1>Futsal Nepal</h1>
-	</div>
-
-	<div role="main" class="ui-content" id="login-content">
 	
-			<label for="textinput-1">Enter UserName:</label>
-			<input type="text" name="textinput-1" id="textinput-1" placeholder="Username.." value="">
-			<label for="textinput-2">Enter Password:</label>
-			<input type="password" name="textinput-2" id="textinput-2" >
+	<div class="center login-box">
+		<h1>FutsalNepal</h1>
+
+		<div role="main" class="ui-content" id="login-content">
+			<div class="error"></div>
+			<input type="text" name="textinput-1" id="textinput-1" placeholder="Username" value="">
+			<input type="password" name="textinput-2" id="textinput-2" placeholder="Password">
 			<!-- <input type="button" value="Log In" id="submit"> -->
 			<button id="loginbutton"class="ui-btn">Log In</button>
 			
-				<a href="http://www.pinesofts.com" target="_blank" class="ui-btn-center" onclick="window.open('http://www.futsalnepal.com/register','_blank','location=yes');return false;">Register Now</a>
-			<div class="error"></div>
+			<a href="http://www.pinesofts.com" target="_blank" class="register" onclick="window.open('http://www.futsalnepal.com/register','_blank','location=yes');return false;">Register Now</a>
 
+		</div>	
 	</div>
+	
 </div>
 <div data-role="page" id="home">
 	<div data-role="header" data-position="fixed">
@@ -78,7 +77,7 @@ https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 		<ul data-role="listview" data-inset="true">
 		  <li data-icon="false">
 		  	<a href="#">
-			    <img src="http://192.168.123.2/pine1/assets/img/profile/user/thumb/{{image}}">
+			    <img src="http://localhost/pine1/assets/img/profile/user/thumb/{{image}}">
 			    <h2>{{name}}</h2>
 			    <p>{{contact}}</p>
 			    <p>{{email}}</p>

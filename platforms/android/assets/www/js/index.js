@@ -1,6 +1,6 @@
 
-var url= "192.168.123.2";
-//var url="localhost"
+//var url= "192.168.123.2";
+var url="localhost"
 var appomat = {};
 
 appomat.app = {
@@ -316,7 +316,7 @@ postTemplate:{
 		FastClick.attach(document.body);
     },
     checkLogin: function() {
-                  $.ajax({
+        $.ajax({
             type: "POST",
             url: 'http://'+url+'/pine1/apiloginhere',
             data: {
@@ -331,7 +331,7 @@ postTemplate:{
                 if (data=="no") {
                     $.mobile.changePage("#login",{transition: 'pop'});
                    // return false;
-                   $(".error").html("Incorrect password and username combination!!TRY AGAIN");
+                   $(".error").html("incorrect username / password !!!");
                 }else{
                     $(".error").html("");
                     $.mobile.changePage("#home",{transition: 'pop'});
@@ -344,6 +344,9 @@ postTemplate:{
                       $(".error").html("");  
                    }
 
+            },
+            beforeSend: function(){
+                $(".error").html("Loggin in...");
             }
         });
     }
@@ -351,8 +354,12 @@ postTemplate:{
 
       //  console.log($("#textinput-1").val());
        //  console.log($("#textinput-2").val());
-         localStorage["username"] = $("#textinput-1").val();
-           localStorage["password"] = $("#textinput-2").val();
+        var username = $("#textinput-1").val();
+        var password = $("#textinput-2").val();
+        if(username=="" || password == "")
+            return false;
+        localStorage["username"] = username;
+        localStorage["password"] = password;
            this.checkLogin();
            
         this.get_blog_data();
@@ -361,9 +368,11 @@ postTemplate:{
     
     },logOut:function(){
 
-         localStorage["username"] = "";
-           localStorage["password"] = "";
-           this.checkLogin();
+        localStorage["username"] = "";
+        localStorage["password"] = "";
+        $("#textinput-1").val("");
+        $("#textinput-2").val("");
+        this.checkLogin();
           
     },
    
@@ -402,6 +411,8 @@ appomat.router= new $.mobile.Router(
        
           if (data=="success") {
             alert("Your Schedule has been Booked!!");
+
+            $("#new").find("*").on();
           }
           else{
           alert(data); 
@@ -422,6 +433,7 @@ appomat.router= new $.mobile.Router(
 
               dataType: 'json',
                   success:function(data){
+                    console.log(data);
         //$.mobile.loading('hide');
        // console.log(data.date);
                   var jsonObj = [];
@@ -430,7 +442,6 @@ appomat.router= new $.mobile.Router(
               item ["contact"] = data.contact;
               item ["body"] = data.body;
                item ["date"] = $("#datehere").val();
-
          item ["adminid"] = data.adminid;
          item ["points"] = data.points;
               jsonObj.push(item);
