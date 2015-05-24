@@ -1,6 +1,6 @@
 
 //var url= "192.168.123.2";
-var url="localhost"
+var url="localhost";
 var appomat = {};
 
 appomat.app = {
@@ -43,6 +43,9 @@ postTemplate:{
 
         $("#view-my-profile").click(function(){
             app.getProfile();
+        });
+            $(document).on("click",".homeclick",function() {
+                      $.mobile.changePage("#home",{transition: 'fade',allowSamePageTransition:true, reverse:true });
         });
 
         $(document).on("click",".ll",function() {
@@ -144,7 +147,7 @@ postTemplate:{
             var app=this;
                   $.ajax({
                   type: "GET",
-                  url: 'http://'+url+'/pine1/arenasdetailapihere',
+                  url: 'http://'+url+'/pine1/arenasdetailapihereref',
                   data: {
                    
                       id:localStorage["recentarena"],
@@ -167,6 +170,7 @@ postTemplate:{
          item ["adminid"] = data.adminid;
          item ["points"] = data.points;
               jsonObj.push(item);
+
               $("#post-content").html(app.postTemplate(jsonObj[0]));
               $("#post-content").enhanceWithin();
                   },
@@ -240,6 +244,7 @@ postTemplate:{
         });
     },
     get_blog_data:function(){
+
      	var app=this;
         $.get('http://'+url+'/pine1/arenasapihere',function(data){
           
@@ -273,6 +278,7 @@ postTemplate:{
         });
     // alert('code: '    + error.code    + '\n' +
     //       'message: ' + error.message + '\n');
+
 }
 
     		function showPosition(position) {
@@ -304,10 +310,12 @@ postTemplate:{
                 }
               });
     }
+
     },
     homeBeforeCreate:function(event,args){
 
     	this.get_blog_data();
+
     	// $("#blog-list").html(this.blogListTemplate(this.blogData));
     	// $("#blog-list").enhanceWithin();
     
@@ -361,8 +369,7 @@ postTemplate:{
         localStorage["username"] = username;
         localStorage["password"] = password;
            this.checkLogin();
-           
-        this.get_blog_data();
+         
         // $("#blog-list").html(this.blogListTemplate(this.blogData));
         // $("#blog-list").enhanceWithin();
     
@@ -383,8 +390,7 @@ postTemplate:{
 appomat.router= new $.mobile.Router(
 			{
 				'#post[?](\\d+)$':{handler:'postBeforeShow',events:"bs"},
-				'#home$':{handler:'homeBeforeCreate',events:"bs"},
-                '#home[?](\\d+)$':{handler:'loginBeforeCreate',events:"bs"},
+				'#home$':{handler:'homeBeforeCreate',events:"bs"}
 
 			},
 
